@@ -1,12 +1,12 @@
-const { Op } = require('sequelize');
-const Producto = require('../models/Producto');
+const { Op } = require("sequelize");
+const Producto = require("../models/Producto");
 
 exports.getTodos = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const size = parseInt(req.query.size) || 5;
-    const nombre = req.query.nombre || ''; // Filtro de búsqueda
-console.log(nombre);
+    const nombre = req.query.nombre || ""; // Filtro de búsqueda
+    console.log(nombre);
     const limit = size;
     const offset = (page - 1) * size;
 
@@ -14,7 +14,7 @@ console.log(nombre);
     const donde = {};
     if (nombre) {
       donde.nombre = {
-        [Op.like]: `%${nombre}%` // Busca cualquier coincidencia que contenga el texto
+        [Op.like]: `%${nombre}%`, // Busca cualquier coincidencia que contenga el texto
       };
     }
 
@@ -23,14 +23,14 @@ console.log(nombre);
       where: donde,
       limit,
       offset,
-      order: [['id', 'DESC']]
+      order: [["id", "DESC"]],
     });
 
     res.json({
       totalItems: count,
       productos: rows,
       totalPages: Math.ceil(count / limit),
-      currentPage: page
+      currentPage: page,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -40,7 +40,7 @@ console.log(nombre);
 exports.getOne = async (req, res) => {
   try {
     const prod = await Producto.findByPk(req.params.id);
-    if (!prod) return res.status(404).json({ message: 'No encontrado' });
+    if (!prod) return res.status(404).json({ message: "No encontrado" });
     res.json(prod);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -58,9 +58,11 @@ exports.crear = async (req, res) => {
 
 exports.actualizar = async (req, res) => {
   try {
-    const [updated] = await Producto.update(req.body, { where: { id: req.params.id } });
-    if (!updated) return res.status(404).json({ message: 'No encontrado' });
-    res.json({ message: 'Producto actualizado' });
+    const [updated] = await Producto.update(req.body, {
+      where: { id: req.params.id },
+    });
+    if (!updated) return res.status(404).json({ message: "No encontrado" });
+    res.json({ message: "Producto actualizado" });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -69,8 +71,8 @@ exports.actualizar = async (req, res) => {
 exports.eliminar = async (req, res) => {
   try {
     const deleted = await Producto.destroy({ where: { id: req.params.id } });
-    if (!deleted) return res.status(404).json({ message: 'No encontrado' });
-    res.json({ message: 'Producto eliminado' });
+    if (!deleted) return res.status(404).json({ message: "No encontrado" });
+    res.json({ message: "Producto eliminado" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

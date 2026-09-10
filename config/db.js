@@ -14,7 +14,7 @@ const sequelize = new Sequelize(
     dialectOptions: {
       ssl: {
         require: true,
-        rejectUnauthorized: false // Permite conectar de forma segura sin descargar el archivo .pem físicamente
+        rejectUnauthorized: false // Permite conectar de forma segura sin descargar el archivo .pem físicamen
       }
     }
   }
